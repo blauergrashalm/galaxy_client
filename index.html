@@ -6,6 +6,15 @@
     <title>Spiral Galaxy</title>
 </head>
 <body>
-    
+
+    <input type="button" value="Test!" id="test" />
+
+    <script type="module">
+        import NetManager from "bin/Websocket.js";
+
+        document.querySelector("#test").addEventListener("click", ()=>{
+            let mng = new NetManager();
+        })
+    </script>
 </body>
 </html>
