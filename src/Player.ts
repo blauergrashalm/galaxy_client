@@ -1,11 +1,9 @@
-export class Player{
-    public html:HTMLDivElement;
+export class Player {
+    public html: HTMLDivElement;
 
-    constructor(private id:number, private name:string){
+    constructor(private id: number, private name: string) { }
 
-    }
-
-    buildHTML(){
+    buildHTML() {
         this.html = document.createElement("div");
         this.html.innerText = this.name;
     }
