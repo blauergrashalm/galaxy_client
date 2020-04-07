@@ -19,111 +19,11 @@
                 </div>
             </div>
             <div class="slanted-button"><span>Neues Spiel</span></div>
-            <div class="slanted-button"><span>Lösen</span></div>
+            <div class="slanted-button" id="close"><span>Beenden</span></div>
         </div>
         <div class="main-area">
             <div class="game-area">
                 <div class="game-grid">
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
-                    <div class="game-field"></div>
                 </div>
             </div>
             <div class="player-area">
@@ -131,6 +31,9 @@
             </div>
         </div>
     </div>
-    
+    <script type="module">
+        import {Galaxy} from "./bin/Galaxy.js"
+        let g = new Galaxy();
+    </script>
 </body>
 </html>
