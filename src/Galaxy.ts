@@ -15,6 +15,17 @@ export class Galaxy {
     }
 
     buildGame(data: any) {
+        // Reset
+        for (const id in this.dots) {
+            this.dots[id].html.remove();
+        }
+        for (const id in this.fields) {
+            this.fields[id].html.remove();
+        }
+
+        this.fields = {};
+        this.dots = {};
+
         this.x_size = data.state.size_x;
         this.y_size = data.state.size_y;
         this.fields_by_pos = new Array(this.x_size);
@@ -63,6 +74,10 @@ export class Galaxy {
 
     applyChange(data: any) {
         this.fields[data.field].registerDot(this.dots[data.dot]);
+    }
+
+    newGame() {
+        this.network.send({ command: "new_game" })
     }
 
     interconnectFields() {

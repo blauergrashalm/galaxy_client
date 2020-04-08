@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-
     <div class="vertical-flex">
         <div class="menu-bar">
             <div class="emblem">
@@ -18,7 +17,7 @@
 
                 </div>
             </div>
-            <div class="slanted-button"><span>Neues Spiel</span></div>
+            <div class="slanted-button" onclick="window.g.newGame()"><span>Neues Spiel</span></div>
             <div class="slanted-button" id="close"><span>Beenden</span></div>
         </div>
         <div class="main-area">
@@ -33,7 +32,7 @@
     </div>
     <script type="module">
         import {Galaxy} from "./bin/Galaxy.js"
-        let g = new Galaxy();
+        window.g = new Galaxy();
     </script>
 </body>
 </html>
