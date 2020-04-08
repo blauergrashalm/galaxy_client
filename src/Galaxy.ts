@@ -61,6 +61,11 @@ export class Galaxy {
         this.activeField = f;
     }
 
+    fieldReset(f: Field) {
+        f.deactivate();
+        this.makeChange(f, null);
+    }
+
     dotClicked(d: Dot) {
         if (!this.activeField) return;
         this.makeChange(this.activeField, d);
@@ -69,11 +74,15 @@ export class Galaxy {
     }
 
     makeChange(f: Field, d: Dot) {
-        this.network.send({ command: "game_change", payload: { field: f.id, dot: d.id } })
+        this.network.send({ command: "game_change", payload: { field: f.id, dot: d ? d.id : d } })
     }
 
     applyChange(data: any) {
-        this.fields[data.field].registerDot(this.dots[data.dot]);
+        if (data.dot) {
+            this.fields[data.field].registerDot(this.dots[data.dot]);
+        } else {
+            this.fields[data.field].removeDot();
+        }
     }
 
     newGame() {
