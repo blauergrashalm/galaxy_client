@@ -2,6 +2,8 @@ import { NetManager } from "./Websocket.js";
 import { Galaxy } from "./Galaxy.js";
 import { Dot } from "./Dot.js";
 
+
+const DOUBLE_CLICK_TIME = 500; //ms
 export class Field {
     public html: HTMLDivElement;
     private spinner: HTMLDivElement = null;
@@ -11,6 +13,8 @@ export class Field {
     private right: Field;
     private down: Field;
     private left: Field;
+
+    private lastClicked = 0;
 
     private activated = false;
 
@@ -30,7 +34,12 @@ export class Field {
     }
 
     handleClick() {
-        this.parent.fieldClicked(this);
+        if (this.lastClicked >= Date.now() - DOUBLE_CLICK_TIME) {
+            this.parent.fieldReset(this);
+        } else {
+            this.parent.fieldClicked(this);
+        }
+        this.lastClicked = Date.now();
     }
 
     activate() {
@@ -51,6 +60,12 @@ export class Field {
     registerDot(dot: Dot) {
         this.registeredDot = dot;
         this.actualField.style.backgroundColor = dot.getColor();
+        this.setBorderColor(true);
+    }
+
+    removeDot() {
+        this.registeredDot = null;
+        this.actualField.style.backgroundColor = "#444";
         this.setBorderColor(true);
     }
 
