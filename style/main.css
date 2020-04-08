@@ -177,3 +177,76 @@ body{
     background: conic-gradient(transparent,#fff 50%, transparent 50%, #fff);
     z-index: 1;
 }
+
+.new-game-dialog-container{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    top: 50px;
+    left: 120px;
+    padding: 5px;
+    background-color: #444;
+    z-index: 101;
+    border: solid 1px white;
+}
+
+.new-game-dialog-container .close-btn{
+    background-color: #b84213;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    border:none;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.new-game-dialog-container .new-game-grid{
+    display: grid;
+    gap: 2px;
+    grid-auto-rows: auto;
+    grid-auto-columns: auto;
+}
+
+.new-game-dialog-container .new-game-grid .new-game-cell{
+    background-color: #222;
+    transition: all 0.2s;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    transform-origin: top left;
+    animation: fade-corner-cell 0.3s both;
+}
+
+.new-game-dialog-container .new-game-grid .new-game-cell.active{
+    background-color: #0e77ee;
+}
+.new-game-dialog-container .new-game-grid .new-game-cell.removed{
+    animation: fade-out-corner-cell 0.3s both;
+}
+
+@keyframes fade-corner-cell{
+    from{
+        height: 0;
+        width: 0;
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+        height: 20px;
+        width: 20px;
+    }
+}
+
+@keyframes fade-out-corner-cell{
+    from{
+        opacity: 1;
+        height: 20px;
+        width: 20px;
+    }
+    to{
+        height: 0;
+        width: 0;
+        opacity: 0;
+    }
+}

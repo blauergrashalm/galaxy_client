@@ -1,6 +1,7 @@
 import { Field } from "./Field.js";
 import { NetManager } from "./Websocket.js";
 import { Dot } from "./Dot.js";
+import { GameDialog } from "./GameDialog.js";
 
 export class Galaxy {
     private fields: { [id: number]: Field } = {};
@@ -12,6 +13,7 @@ export class Galaxy {
     private network: NetManager
     constructor() {
         this.network = new NetManager(this);
+        this.registerEventHandler();
     }
 
     buildGame(data: any) {
@@ -86,7 +88,10 @@ export class Galaxy {
     }
 
     newGame() {
-        this.network.send({ command: "new_game" })
+        let g = new GameDialog((x: number, y: number) => {
+            this.network.send({ command: "new_game", payload: { height: y, width: x } })
+        });
+        document.querySelector(".menu-bar").appendChild(g.container);
     }
 
     interconnectFields() {
@@ -100,5 +105,10 @@ export class Galaxy {
                 field.setSurounding(up, right, down, left);
             }
         }
+    }
+
+    registerEventHandler() {
+        document.querySelector("#new").addEventListener("click", this.newGame.bind(this));
+        //document.querySelector("#close").addEventListener("click", this.TODO.bind(this));
     }
 }
