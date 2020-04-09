@@ -40,8 +40,13 @@ export class GameDialog {
     }
 
     handleMouseOver(evt: MouseEvent) {
-        let x = parseInt((evt.target as HTMLDivElement).dataset.x);
-        let y = parseInt((evt.target as HTMLDivElement).dataset.y);
+        let target = <HTMLDivElement>evt.target;
+        if (target.dataset.x == null || target.dataset.y == null) {
+            console.error("Something was wrong with target data!");
+            return;
+        }
+        let x = parseInt(target.dataset.x);
+        let y = parseInt(target.dataset.y);
 
         let best_x = Math.max(5, x + 3);
         let best_y = Math.max(5, y + 3);
@@ -57,8 +62,13 @@ export class GameDialog {
     }
 
     handleClick(evt: MouseEvent) {
-        let x = parseInt((evt.target as HTMLDivElement).dataset.x) + 1
-        let y = parseInt((evt.target as HTMLDivElement).dataset.y) + 1
+        let target = <HTMLDivElement>evt.target;
+        if (target.dataset.x == null || target.dataset.y == null) {
+            console.error("Something was wrong with target data!");
+            return;
+        }
+        let x = parseInt(target.dataset.x) + 1;
+        let y = parseInt(target.dataset.y) + 1;
         this.callback(x, y);
         this.handleClose();
     }

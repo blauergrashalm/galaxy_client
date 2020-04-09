@@ -9,7 +9,7 @@ export class Galaxy {
     private x_size: number;
     private y_size: number;
     private dots: { [id: number]: Dot } = {};
-    private activeField: Field = null;
+    private activeField: Field | null = null;
     private network: NetManager
     constructor() {
         this.network = new NetManager(this);
@@ -39,13 +39,13 @@ export class Galaxy {
             let f = new Field(field.id, field.x, field.y, this.network, this)
             this.fields[f.id] = f;
             this.fields_by_pos[f.x][f.y] = f;
-            elem.appendChild(f.html)
+            elem?.appendChild(f.html)
         }
         this.interconnectFields();
         for (const dot of data.state.dots) {
             let d = new Dot(dot.id, dot.x, dot.y, this.network, this);
             this.dots[d.id] = d;
-            elem.appendChild(d.html);
+            elem?.appendChild(d.html);
             if (dot.fields) for (const field_id of dot.fields) {
                 this.fields[field_id].registerDot(d);
             }
@@ -75,8 +75,8 @@ export class Galaxy {
         this.activeField = null;
     }
 
-    makeChange(f: Field, d: Dot) {
-        this.network.send({ command: "game_change", payload: { field: f.id, dot: d ? d.id : d } })
+    makeChange(f: Field, d: Dot | null) {
+        this.network.send({ command: "game_change", payload: { field: f.id, dot: d != null ? d.id : d } })
     }
 
     applyChange(data: any) {
@@ -91,7 +91,7 @@ export class Galaxy {
         let g = new GameDialog((x: number, y: number) => {
             this.network.send({ command: "new_game", payload: { height: y, width: x } })
         });
-        document.querySelector(".menu-bar").appendChild(g.container);
+        document.querySelector(".menu-bar")?.appendChild(g.container);
     }
 
     interconnectFields() {
@@ -102,13 +102,13 @@ export class Galaxy {
                 let down = y === this.y_size - 1 ? null : this.fields_by_pos[x][y + 1];
                 let right = x === this.x_size - 1 ? null : this.fields_by_pos[x + 1][y];
                 let left = x === 0 ? null : this.fields_by_pos[x - 1][y];
-                field.setSurounding(up, right, down, left);
+                field.setSurrounding(up, right, down, left);
             }
         }
     }
 
     registerEventHandler() {
-        document.querySelector("#new").addEventListener("click", this.newGame.bind(this));
+        document.querySelector("#new")?.addEventListener("click", this.newGame.bind(this));
         //document.querySelector("#close").addEventListener("click", this.TODO.bind(this));
     }
 }
