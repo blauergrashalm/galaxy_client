@@ -5,7 +5,10 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "outDir": "bin",
-        "sourceMap": true
+        "sourceMap": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true
     },
     "include": [
         "src/**/*"

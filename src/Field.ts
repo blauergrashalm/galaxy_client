@@ -6,13 +6,13 @@ import { Dot } from "./Dot.js";
 const DOUBLE_CLICK_TIME = 500; //ms
 export class Field {
     public html: HTMLDivElement;
-    private spinner: HTMLDivElement = null;
+    private spinner: HTMLDivElement | null = null;
     private actualField: HTMLDivElement;
-    public registeredDot: Dot = null;
-    private up: Field;
-    private right: Field;
-    private down: Field;
-    private left: Field;
+    public registeredDot: Dot | null = null;
+    private up: Field | null;
+    private right: Field | null;
+    private down: Field | null;
+    private left: Field | null;
 
     private lastClicked = 0;
 
@@ -69,7 +69,7 @@ export class Field {
         this.setBorderColor(true);
     }
 
-    setSurounding(up: Field, right: Field, down: Field, left: Field) {
+    setSurrounding(up: Field | null, right: Field | null, down: Field | null, left: Field | null) {
         this.up = up;
         this.right = right;
         this.down = down;
@@ -89,7 +89,7 @@ export class Field {
         }
     }
 
-    determinBorderColor(otherField: Field) {
+    determinBorderColor(otherField: Field | null) {
         if (otherField === null) {
             if (this.registeredDot) return this.registeredDot.getColor(100);
             else return "#333";
