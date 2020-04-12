@@ -80,7 +80,7 @@ export class Galaxy {
     }
 
     applyChange(data: any) {
-        if (data.dot) {
+        if (data.dot !== null) {
             this.fields[data.field].registerDot(this.dots[data.dot]);
         } else {
             this.fields[data.field].removeDot();
