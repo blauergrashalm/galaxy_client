@@ -48,8 +48,8 @@ export class GameDialog {
         let x = parseInt(target.dataset.x);
         let y = parseInt(target.dataset.y);
 
-        let best_x = Math.max(5, x + 3);
-        let best_y = Math.max(5, y + 3);
+        let best_x = Math.min(20, Math.max(5, x + 3));
+        let best_y = Math.min(20, Math.max(5, y + 3));
 
         this.shrinkCells(best_x, best_y);
         this.expandCells(best_x, best_y);
