@@ -2,6 +2,7 @@ import { Field } from "./Field.js";
 import { NetManager } from "./Websocket.js";
 import { Dot } from "./Dot.js";
 import { GameDialog } from "./GameDialog.js";
+import { Player } from "./Player.js";
 
 export class Galaxy {
     private fields: { [id: number]: Field } = {};
@@ -10,7 +11,9 @@ export class Galaxy {
     private y_size: number;
     private dots: { [id: number]: Dot } = {};
     private activeField: Field | null = null;
-    private network: NetManager
+    private network: NetManager;
+    private self: Player;
+    private players: Player[];
     constructor() {
         this.network = new NetManager(this);
         this.registerEventHandler();
@@ -41,7 +44,6 @@ export class Galaxy {
             this.fields_by_pos[f.x][f.y] = f;
             elem?.appendChild(f.html)
         }
-        this.interconnectFields();
         for (const dot of data.state.dots) {
             let d = new Dot(dot.id, dot.x, dot.y, this.network, this);
             this.dots[d.id] = d;
@@ -50,6 +52,7 @@ export class Galaxy {
                 this.fields[field_id].registerDot(d);
             }
         }
+        this.calculateDims();
     }
 
     fieldClicked(f: Field) {
@@ -94,21 +97,68 @@ export class Galaxy {
         document.querySelector(".menu-bar")?.appendChild(g.container);
     }
 
-    interconnectFields() {
-        for (let x = 0; x < this.x_size; x++) {
-            for (let y = 0; y < this.y_size; y++) {
-                let field = this.fields_by_pos[x][y];
-                let up = y === 0 ? null : this.fields_by_pos[x][y - 1];
-                let down = y === this.y_size - 1 ? null : this.fields_by_pos[x][y + 1];
-                let right = x === this.x_size - 1 ? null : this.fields_by_pos[x + 1][y];
-                let left = x === 0 ? null : this.fields_by_pos[x - 1][y];
-                field.setSurrounding(up, right, down, left);
+    registerEventHandler() {
+        document.querySelector("#new")?.addEventListener("click", this.newGame.bind(this));
+        window.addEventListener("resize", this.calculateDims.bind(this));
+        //document.querySelector("#close").addEventListener("click", this.TODO.bind(this));
+    }
+
+    calculateDims() {
+        let aspectWindow = window.innerHeight / window.innerWidth;
+        let aspectGame = this.y_size / this.x_size;
+        let mainWrapper = document.querySelector(".main-wrapper");
+        let horizontal = true;
+        if (aspectGame > aspectWindow) {
+            mainWrapper?.classList.add("horizontal");
+            mainWrapper?.classList.remove("vertical");
+        } else {
+            horizontal = false;
+            mainWrapper?.classList.remove("horizontal");
+            mainWrapper?.classList.add("vertical");
+        }
+        window.setTimeout(this.calculateCellDims.bind(this, horizontal), 0);
+    }
+
+    calculateCellDims(is_horizonatl: boolean) {
+        let mainWrapper = document.querySelector(".game-area");
+        if (!mainWrapper) throw "asdf";
+        let relevantDim = 0;
+        let relevantCellCount = 0;
+
+        if (is_horizonatl) {
+            relevantDim = this.innerDimensions(mainWrapper).height;
+            relevantCellCount = this.y_size;
+
+        } else {
+            relevantDim = this.innerDimensions(mainWrapper).width;
+            relevantCellCount = this.x_size;
+        }
+        let gap = (relevantDim / 20) / (relevantCellCount - 1);
+        let dim = (relevantDim - (relevantCellCount - 1) * gap) / relevantCellCount;
+        (<HTMLDivElement>document.querySelector(".game-grid")).style.gap = gap + "px";
+        for (let i = 0; i < this.fields_by_pos.length; i++) {
+            for (let j = 0; j < this.fields_by_pos[i].length; j++) {
+                this.fields_by_pos[i][j].html.style.height = dim + "px";
+                this.fields_by_pos[i][j].html.style.width = dim + "px";
+            }
+        }
+        for (const id in this.dots) {
+            if (this.dots.hasOwnProperty(id)) {
+                const dot = this.dots[id];
+                dot.dot.style.height = (dim / 1.5) + "px";
+                dot.dot.style.width = (dim / 1.5) + "px";
             }
         }
     }
 
-    registerEventHandler() {
-        document.querySelector("#new")?.addEventListener("click", this.newGame.bind(this));
-        //document.querySelector("#close").addEventListener("click", this.TODO.bind(this));
+    innerDimensions(node: Element) {
+        var computedStyle = getComputedStyle(node)
+
+        let width = node.clientWidth // width with padding
+        let height = node.clientHeight // height with padding
+
+        height -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom)
+        width -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight)
+        return { height, width }
     }
 }

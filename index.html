@@ -5,34 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spiral Galaxy</title>
     <link rel="stylesheet" href="style/main.css">
+    <link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
-    <div class="vertical-flex">
+    <div class="main-wrapper horizontal">
         <div class="menu-bar">
-            <div class="emblem">
-                <div class="button">
-                    Spiral Galaxy
-                </div>
-                <div class="stroke">
-
-                </div>
-            </div>
-            <div class="slanted-button" id="new"><span>Neues Spiel</span></div>
-            <div class="slanted-button" id="close"><span>Beenden</span></div>
+            <div class="btn" id="new"><span>Neues Spiel</span></div>
         </div>
         <div class="main-area">
             <div class="game-area">
                 <div class="game-grid">
                 </div>
             </div>
-            <div class="player-area">
-
-            </div>
+        </div>
+        <div class="player-area">
+            Test
         </div>
     </div>
     <script type="module">
         import {Galaxy} from "./bin/Galaxy.js"
         new Galaxy();
+        window.onload = () => {
+            'use strict';
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js');
+            }
+        }
     </script>
 </body>
 </html>

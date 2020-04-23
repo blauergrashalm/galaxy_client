@@ -3,6 +3,7 @@ import { Galaxy } from "./Galaxy.js";
 
 export class Dot {
     public html: HTMLDivElement;
+    public dot: HTMLDivElement;
 
     constructor(public id: number, private x: number, private y: number, private net: NetManager, private parent: Galaxy) {
         this.generateHTML();
@@ -14,13 +15,13 @@ export class Dot {
         this.html.style.gridColumn = `${Math.floor((this.x + 2) / 2)} / ${Math.ceil((this.x + 2) / 2) + 1}`;
         this.html.style.gridRow = `${Math.floor((this.y + 2) / 2)} / ${Math.ceil((this.y + 2) / 2) + 1}`;
 
-        let dot = document.createElement("div");
-        dot.classList.add("dot");
-        this.html.appendChild(dot);
+        this.dot = document.createElement("div");
+        this.dot.classList.add("dot");
+        this.html.appendChild(this.dot);
 
 
-        dot.style.backgroundColor = this.getColor();
-        dot.addEventListener("click", this.handleClick.bind(this));
+        this.dot.style.backgroundColor = this.getColor();
+        this.dot.addEventListener("click", this.handleClick.bind(this));
     }
 
     handleClick() {

@@ -9,10 +9,15 @@
     }
 }
 
+@font-face{
+    font-family: "Orbitron";
+    src: url(./Orbitron-VariableFont_wght.ttf);
+}
+
 *{
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    font-family: "Orbitron";
     font-size: 12pt;
     box-sizing: border-box;
 }
@@ -21,83 +26,47 @@ body{
     background-color: #333;
 }
 
-.vertical-flex{
-    position: absolute;
+.main-wrapper{
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     height: 100%;
     width: 100%;
+    position: absolute;
+    z-index: -100;
+    background: url(./sky-828648.jpg);
+    background-size: cover;
+    justify-content: center;
+}
+
+.vertical{
+    flex-direction: column;
+}
+
+.horizontal{
+    flex-direction: row;
 }
 
 .menu-bar{
     padding: 10px;
+    flex-shrink: 1;
+}
+
+.horizontal .main-area{
     display: flex;
+    flex-direction: row;
 }
 
-.emblem{
-    position: relative;
-}
-
-.emblem .button{
+.vertical .main-area{
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 25px;
-    padding-right: 25px;
-    padding-left: 10px;
-    color: #0fff;
-    position: relative;
-    background: linear-gradient(90deg, #066, #0aa);
-    clip-path: polygon(0% 0%, 100% 0%, calc(100% - 25px) 100%, 0% 100%);
-}
-.emblem .stroke{
-    content: "";
-    position: absolute;
-    height: 55px;
-    width: 2px;
-    top: -5px;
-    right: 0px;
-    transform-origin: 1px 5px;
-    transform: rotate(45deg);
-    background-color: #0ff;
-    box-shadow: 0 0 2px 0px #0ff;
-}
-
-.slanted-button{
-    margin:0 5px;
-    margin-top: 5px;
-    padding: 3px 20px;
-    background-color: #555;
-    transform: skew(-45deg);
-    border: solid 1px #999;
-    transform-origin: 0 0 ;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.slanted-button:hover{
-    border-color: #fff;
-    box-shadow: 0 0 2px 0px #fff;
-}
-
-.slanted-button span{
-    color: #fff;
-    display:inline-block;
-    transform: skew(45deg);
-}
-
-.main-area{
-    display: flex;
-    flex-grow: 1;
+    flex-direction: column;
 }
 
 .game-area{
-    padding: 50px;
+    padding: 1vmin;
 }
 
 .game-grid{
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
 }
 
 .game-field-wrapper{
@@ -106,25 +75,21 @@ body{
 
 .game-field{
     animation: field-fade-in 0.5s 1 cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    height: 40px;
-    width: 40px;
-    border: solid 1px #333;
-    background-color: #444;
+    height: 100%;
+    width: 100%;
+    background-color: #0008;
+    border-radius: 1vmin;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .game-field.active{
     position: relative;
-    z-index: 10;
-    border-color: transparent;
-    background: radial-gradient(#333, #33333380);
+    z-index: -1;
+    box-shadow: 0 0 1vmin 1vmin hsl(190, 100%, 60%);
 }
 .game-field:hover{
-    background-color: #666;
-}
-.game-field.active:hover{
-    background: radial-gradient(#333, #33333380);
+    background-color: #fff8;
 }
 
 .game-dot{
@@ -140,12 +105,14 @@ body{
 .game-dot .dot{
     position: relative;
     pointer-events: painted;
-    height: 25px;
-    width: 25px;
     background-color: red;
-    border: solid 2px #333;
+    border: solid 1px #000;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.player-area{
+    flex-shrink: 1;
 }
 
 @keyframes spin{
@@ -156,43 +123,19 @@ body{
         transform: rotate(360deg);
     }
 }
-
-.spinning-frame{
-    position: absolute;
-    height: 200%;
-    width: 200%;
-    top: calc(-50%);
-    left: calc(-50%);
-    clip-path: inset(calc(25% - 2px));
-    z-index: 1;
-}
-
-.spinning-frame::after{
-    content: "";
-    animation: spin linear 2s infinite;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    background: conic-gradient(transparent,#fff 50%, transparent 50%, #fff);
-    z-index: 1;
-}
-
 .new-game-dialog-container{
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: stretch;
-    top: 50px;
-    left: 120px;
     padding: 5px;
-    background-color: #444;
+    background-color: #000;
     z-index: 101;
     border: solid 1px white;
 }
 
 .new-game-dialog-container .close-btn{
-    background-color: #b84213;
+    background-color: hsl(25, 100%, 60%);;
     color: white;
     padding: 5px;
     text-align: center;
@@ -203,13 +146,13 @@ body{
 
 .new-game-dialog-container .new-game-grid{
     display: grid;
-    gap: 2px;
+    gap: 0.5vmin;
     grid-auto-rows: auto;
     grid-auto-columns: auto;
 }
 
 .new-game-dialog-container .new-game-grid .new-game-cell{
-    background-color: #222;
+    background-color: #333;
     transition: all 0.2s;
     height: 20px;
     width: 20px;
@@ -219,10 +162,16 @@ body{
 }
 
 .new-game-dialog-container .new-game-grid .new-game-cell.active{
-    background-color: #0e77ee;
+    background-color: hsl(190, 100%, 60%);
 }
 .new-game-dialog-container .new-game-grid .new-game-cell.removed{
     animation: fade-out-corner-cell 0.3s both;
+}
+
+.btn{
+    padding: 5px;
+    color: white;
+    font-size: 15px;
 }
 
 @keyframes fade-corner-cell{

@@ -20,6 +20,8 @@ export class NetManager {
             this.parent.buildGame(data);
         } else if (data.type === "game_change") {
             this.parent.applyChange(data);
+        } else if (data.type === "connect") {
+
         }
     }
 

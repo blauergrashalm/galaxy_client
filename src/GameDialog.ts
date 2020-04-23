@@ -5,11 +5,14 @@ export class GameDialog {
     private x_size = 5;
     private y_size = 5;
     private cells: HTMLDivElement[][] = [];
+    private touchhandler = this.handleTouch.bind(this);
     constructor(private callback: (x: number, y: number) => void) {
         this.buildHTML();
+        window.addEventListener("touchmove", this.touchhandler, { passive: false });
     }
 
     buildHTML() {
+        let newGameButton = document.querySelector("#new");
         this.container = document.createElement("div");
         this.container.classList.add("new-game-dialog-container");
 
@@ -25,6 +28,9 @@ export class GameDialog {
 
         this.container.appendChild(this.grid);
 
+        let dimsButton = <DOMRect>newGameButton?.getBoundingClientRect();
+        this.container.style.top = (dimsButton?.top + dimsButton?.height + 10) + "px";
+
         for (let i = 0; i < this.x_size; i++) {
             this.cells.push([]);
             for (let j = 0; j < this.y_size; j++) {
@@ -35,11 +41,23 @@ export class GameDialog {
         }
     }
 
-    handleClose() {
-        this.container.remove();
+    handleTouch(evt: TouchEvent) {
+        let elem = document.elementFromPoint(evt.touches[0].clientX, evt.touches[0].clientY);
+        if (elem?.classList.contains("new-game-cell")) {
+            let new_evt = new MouseEvent("mouseenter");
+            elem.dispatchEvent(new_evt);
+
+        }
+        evt.stopPropagation();
+        evt.preventDefault();
     }
 
-    handleMouseOver(evt: MouseEvent) {
+    handleClose() {
+        this.container.remove();
+        window.removeEventListener("touchmove", this.touchhandler);
+    }
+
+    handleMouseOver(evt: MouseEvent | TouchEvent) {
         let target = <HTMLDivElement>evt.target;
         if (target.dataset.x == null || target.dataset.y == null) {
             console.error("Something was wrong with target data!");
@@ -61,7 +79,7 @@ export class GameDialog {
             }
     }
 
-    handleClick(evt: MouseEvent) {
+    handleClick(evt: MouseEvent | TouchEvent) {
         let target = <HTMLDivElement>evt.target;
         if (target.dataset.x == null || target.dataset.y == null) {
             console.error("Something was wrong with target data!");
@@ -133,6 +151,7 @@ export class GameDialog {
         cell.dataset.y = j.toString();
         cell.style.gridArea = `${j + 1} / ${i + 1} / ${j + 2} / ${i + 2}`;
         cell.addEventListener("mouseenter", this.handleMouseOver.bind(this));
+
         cell.addEventListener("click", this.handleClick.bind(this));
         return cell;
     }
