@@ -2,9 +2,6 @@ name: Build
 
 on:
   push:
-    branches:
-      - "develop"
-      - "production"
   pull_request:
 
 jobs:
