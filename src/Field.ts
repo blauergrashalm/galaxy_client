@@ -9,28 +9,32 @@ export class Field {
     private spinner: HTMLDivElement | null = null;
     private actualField: HTMLDivElement;
     public registeredDot: Dot | null = null;
-    private up: Field | null;
-    private right: Field | null;
-    private down: Field | null;
-    private left: Field | null;
+    private up: Field | null = null;
+    private right: Field | null = null;
+    private down: Field | null = null;
+    private left: Field | null = null;
 
     private lastClicked = 0;
 
     private activated = false;
 
     constructor(public id: number, public x: number, public y: number, private net: NetManager, private parent: Galaxy) {
-        this.generateHTML();
+        let result = this.generateHTML();
+        this.html = result[0];
+        this.actualField = result[1];
         this.html.addEventListener("click", this.handleClick.bind(this));
     }
 
-    generateHTML() {
-        this.html = document.createElement("div");
-        this.html.classList.add("game-field-wrapper");
-        this.actualField = document.createElement("div");
-        this.actualField.classList.add("game-field");
-        this.html.style.gridColumn = `${this.x + 1} / ${this.x + 2}`;
-        this.html.style.gridRow = `${this.y + 1} / ${this.y + 2}`;
-        this.html.appendChild(this.actualField);
+    private generateHTML(): [HTMLDivElement, HTMLDivElement] {
+        let divElement = document.createElement("div");
+        divElement.classList.add("game-field-wrapper");
+        let actualField = document.createElement("div");
+        actualField.classList.add("game-field");
+        divElement.style.gridColumn = `${this.x + 1} / ${this.x + 2}`;
+        divElement.style.gridRow = `${this.y + 1} / ${this.y + 2}`;
+        divElement.appendChild(actualField);
+
+        return [divElement, actualField];
     }
 
     handleClick() {

@@ -1,10 +1,14 @@
 export class Player {
     public html: HTMLDivElement;
 
-    constructor(private id: number, private name: string) { }
+    constructor(private id: number, private name: string) {
+        this.html = this.buildHTML();
+    }
 
-    buildHTML() {
-        this.html = document.createElement("div");
-        this.html.innerText = this.name;
+    private buildHTML(): HTMLDivElement {
+        let html = document.createElement("div");
+        html.innerText = this.name;
+
+        return html;
     }
 }

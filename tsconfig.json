@@ -6,9 +6,7 @@
         "preserveConstEnums": true,
         "outDir": "bin",
         "sourceMap": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "strictNullChecks": true
+        "strict": true,
     },
     "include": [
         "src/**/*"

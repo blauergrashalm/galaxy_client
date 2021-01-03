@@ -5,9 +5,9 @@ import { GameDialog } from "./GameDialog.js";
 
 export class Galaxy {
     private fields: { [id: number]: Field } = {};
-    private fields_by_pos: Field[][];
-    private x_size: number;
-    private y_size: number;
+    private fields_by_pos: Field[][] = [];
+    private x_size: number | undefined;
+    private y_size: number | undefined;
     private dots: { [id: number]: Dot } = {};
     private activeField: Field | null = null;
     private network: NetManager
@@ -28,8 +28,8 @@ export class Galaxy {
         this.fields = {};
         this.dots = {};
 
-        this.x_size = data.state.size_x;
-        this.y_size = data.state.size_y;
+        this.x_size = <number>data.state.size_x;
+        this.y_size = <number>data.state.size_y;
         this.fields_by_pos = new Array(this.x_size);
         for (let i = 0; i < this.fields_by_pos.length; i++) {
             this.fields_by_pos[i] = new Array(this.y_size);
@@ -41,7 +41,7 @@ export class Galaxy {
             this.fields_by_pos[f.x][f.y] = f;
             elem?.appendChild(f.html)
         }
-        this.interconnectFields();
+        this.interconnectFields(this.x_size, this.y_size);
         for (const dot of data.state.dots) {
             let d = new Dot(dot.id, dot.x, dot.y, this.network, this);
             this.dots[d.id] = d;
@@ -94,13 +94,13 @@ export class Galaxy {
         document.querySelector(".menu-bar")?.appendChild(g.container);
     }
 
-    interconnectFields() {
-        for (let x = 0; x < this.x_size; x++) {
-            for (let y = 0; y < this.y_size; y++) {
+    private interconnectFields(x_size: number, y_size: number) {
+        for (let x = 0; x < x_size; x++) {
+            for (let y = 0; y < y_size; y++) {
                 let field = this.fields_by_pos[x][y];
                 let up = y === 0 ? null : this.fields_by_pos[x][y - 1];
-                let down = y === this.y_size - 1 ? null : this.fields_by_pos[x][y + 1];
-                let right = x === this.x_size - 1 ? null : this.fields_by_pos[x + 1][y];
+                let down = y === y_size - 1 ? null : this.fields_by_pos[x][y + 1];
+                let right = x === x_size - 1 ? null : this.fields_by_pos[x + 1][y];
                 let left = x === 0 ? null : this.fields_by_pos[x - 1][y];
                 field.setSurrounding(up, right, down, left);
             }

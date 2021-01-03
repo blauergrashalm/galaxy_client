@@ -6,24 +6,26 @@ export class GameDialog {
     private y_size = 5;
     private cells: HTMLDivElement[][] = [];
     constructor(private callback: (x: number, y: number) => void) {
-        this.buildHTML();
+        let result = this.buildHTML();
+        this.container = result[0];
+        this.grid = result[1];
     }
 
-    buildHTML() {
-        this.container = document.createElement("div");
-        this.container.classList.add("new-game-dialog-container");
+    private buildHTML(): [HTMLDivElement, HTMLDivElement] {
+        let container = document.createElement("div");
+        container.classList.add("new-game-dialog-container");
 
         let closeButton = document.createElement("button");
         closeButton.classList.add("close-btn");
         closeButton.innerText = "Abbrechen";
         closeButton.addEventListener("click", this.handleClose.bind(this));
 
-        this.container.appendChild(closeButton);
+        container.appendChild(closeButton);
 
-        this.grid = document.createElement("div");
-        this.grid.classList.add("new-game-grid");
+        let grid = document.createElement("div");
+        grid.classList.add("new-game-grid");
 
-        this.container.appendChild(this.grid);
+        container.appendChild(this.grid);
 
         for (let i = 0; i < this.x_size; i++) {
             this.cells.push([]);
@@ -33,6 +35,8 @@ export class GameDialog {
                 this.grid.appendChild(cell);
             }
         }
+
+        return [container, grid];
     }
 
     handleClose() {
