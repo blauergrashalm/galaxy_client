@@ -9,7 +9,7 @@ export class Galaxy {
     private x_size: number | undefined;
     private y_size: number | undefined;
     private dots: { [id: number]: Dot } = {};
-    private activeField: Field | null = null;
+    private activeField: Field | undefined;
     private network: NetManager
     constructor() {
         this.network = new NetManager(this);
@@ -63,22 +63,22 @@ export class Galaxy {
 
     fieldReset(f: Field): void {
         f.deactivate();
-        this.makeChange(f, null);
+        this.makeChange(f, undefined);
     }
 
     dotClicked(d: Dot): void {
         if (!this.activeField) return;
         this.makeChange(this.activeField, d);
         this.activeField.deactivate();
-        this.activeField = null;
+        this.activeField = undefined;
     }
 
-    makeChange(f: Field, d: Dot | null): void {
-        this.network.send({ command: "game_change", payload: { field: f.id, dot: d != null ? d.id : d } })
+    makeChange(f: Field, d: Dot | undefined): void {
+        this.network.send({ command: "game_change", payload: { field: f.id, dot: d !== undefined ? d.id : d } })
     }
 
     applyChange(data: any): void {
-        if (data.dot !== null) {
+        if (data.dot !== undefined) {
             this.fields[data.field].registerDot(this.dots[data.dot]);
         } else {
             this.fields[data.field].removeDot();
@@ -96,10 +96,10 @@ export class Galaxy {
         for (let x = 0; x < x_size; x++) {
             for (let y = 0; y < y_size; y++) {
                 const field = this.fields_by_pos[x][y];
-                const up = y === 0 ? null : this.fields_by_pos[x][y - 1];
-                const down = y === y_size - 1 ? null : this.fields_by_pos[x][y + 1];
-                const right = x === x_size - 1 ? null : this.fields_by_pos[x + 1][y];
-                const left = x === 0 ? null : this.fields_by_pos[x - 1][y];
+                const up = y === 0 ? undefined : this.fields_by_pos[x][y - 1];
+                const down = y === y_size - 1 ? undefined : this.fields_by_pos[x][y + 1];
+                const right = x === x_size - 1 ? undefined : this.fields_by_pos[x + 1][y];
+                const left = x === 0 ? undefined : this.fields_by_pos[x - 1][y];
                 field.setSurrounding(up, right, down, left);
             }
         }

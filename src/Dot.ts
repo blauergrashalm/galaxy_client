@@ -9,12 +9,12 @@ export class Dot {
     }
 
     private generateHTML(): HTMLDivElement {
-        let divElement = document.createElement("div");
+        const divElement = document.createElement("div");
         divElement.classList.add("game-dot");
         divElement.style.gridColumn = `${Math.floor((this.x + 2) / 2)} / ${Math.ceil((this.x + 2) / 2) + 1}`;
         divElement.style.gridRow = `${Math.floor((this.y + 2) / 2)} / ${Math.ceil((this.y + 2) / 2) + 1}`;
 
-        let dot = document.createElement("div");
+        const dot = document.createElement("div");
         dot.classList.add("dot");
         divElement.appendChild(dot);
 
@@ -24,14 +24,14 @@ export class Dot {
         return divElement;
     }
 
-    handleClick() {
+    handleClick(): void {
         this.parent.dotClicked(this);
     }
 
-    getColor(saturation = 65) {
+    getColor(saturation = 65): string {
         let hue = this.id * 0.618033988749895
         hue %= 1;
-        let lightness = 40 + (this.id % 3) * 20;
+        const lightness = 40 + (this.id % 3) * 20;
         return `hsl(${hue * 360}, ${saturation}%, ${lightness}%)`;
     }
 }

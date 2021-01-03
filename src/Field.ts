@@ -6,13 +6,13 @@ import { Dot } from "./Dot.js";
 const DOUBLE_CLICK_TIME = 500; //ms
 export class Field {
     public html: HTMLDivElement;
-    private spinner: HTMLDivElement | null = null;
+    private spinner: HTMLDivElement | undefined;
     private actualField: HTMLDivElement;
-    public registeredDot: Dot | null = null;
-    private up: Field | null = null;
-    private right: Field | null = null;
-    private down: Field | null = null;
-    private left: Field | null = null;
+    public registeredDot: Dot | undefined;
+    private up: Field | undefined;
+    private right: Field | undefined;
+    private down: Field | undefined;
+    private left: Field | undefined;
 
     private lastClicked = 0;
 
@@ -57,7 +57,7 @@ export class Field {
 
     deactivate(): void {
         this.activated = false;
-        if (this.spinner) { this.spinner.remove(); this.spinner = null; }
+        if (this.spinner) { this.spinner.remove(); this.spinner = undefined; }
         this.actualField.classList.remove("active");
     }
 
@@ -68,12 +68,12 @@ export class Field {
     }
 
     removeDot(): void {
-        this.registeredDot = null;
+        this.registeredDot = undefined;
         this.actualField.style.backgroundColor = "#444";
         this.setBorderColor(true);
     }
 
-    setSurrounding(up: Field | null, right: Field | null, down: Field | null, left: Field | null): void {
+    setSurrounding(up: Field | undefined, right: Field | undefined, down: Field | undefined, left: Field | undefined): void {
         this.up = up;
         this.right = right;
         this.down = down;
@@ -93,13 +93,13 @@ export class Field {
         }
     }
 
-    determinBorderColor(otherField: Field | null): string {
-        if (otherField === null) {
+    determinBorderColor(otherField: Field | undefined): string {
+        if (otherField === undefined) {
             if (this.registeredDot) return this.registeredDot.getColor(100);
             else return "#333";
         }
-        if (this.registeredDot === null) {
-            if (otherField.registeredDot === null) return "#333";
+        if (this.registeredDot === undefined) {
+            if (otherField.registeredDot === undefined) return "#333";
             else return otherField.registeredDot.getColor(100);
         } else {
             if (this.registeredDot === otherField.registeredDot) return this.registeredDot.getColor();

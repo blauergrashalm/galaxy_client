@@ -6,23 +6,23 @@ export class GameDialog {
     private y_size = 5;
     private cells: HTMLDivElement[][] = [];
     constructor(private callback: (x: number, y: number) => void) {
-        let result = this.buildHTML();
+        const result = this.buildHTML();
         this.container = result[0];
         this.grid = result[1];
     }
 
     private buildHTML(): [HTMLDivElement, HTMLDivElement] {
-        let container = document.createElement("div");
+        const container = document.createElement("div");
         container.classList.add("new-game-dialog-container");
 
-        let closeButton = document.createElement("button");
+        const closeButton = document.createElement("button");
         closeButton.classList.add("close-btn");
         closeButton.innerText = "Abbrechen";
         closeButton.addEventListener("click", this.handleClose.bind(this));
 
         container.appendChild(closeButton);
 
-        let grid = document.createElement("div");
+        const grid = document.createElement("div");
         grid.classList.add("new-game-grid");
 
         container.appendChild(this.grid);
@@ -30,7 +30,7 @@ export class GameDialog {
         for (let i = 0; i < this.x_size; i++) {
             this.cells.push([]);
             for (let j = 0; j < this.y_size; j++) {
-                let cell = this.generateCell(i, j);
+                const cell = this.generateCell(i, j);
                 this.cells[i].push(cell);
                 this.grid.appendChild(cell);
             }
@@ -39,21 +39,21 @@ export class GameDialog {
         return [container, grid];
     }
 
-    handleClose() {
+    handleClose(): void {
         this.container.remove();
     }
 
-    handleMouseOver(evt: MouseEvent) {
-        let target = <HTMLDivElement>evt.target;
-        if (target.dataset.x == null || target.dataset.y == null) {
+    handleMouseOver(evt: MouseEvent): void {
+        const target = <HTMLDivElement>evt.target;
+        if (target.dataset.x === undefined || target.dataset.y === undefined) {
             console.error("Something was wrong with target data!");
             return;
         }
-        let x = parseInt(target.dataset.x);
-        let y = parseInt(target.dataset.y);
+        const x = parseInt(target.dataset.x);
+        const y = parseInt(target.dataset.y);
 
-        let best_x = Math.min(20, Math.max(5, x + 3));
-        let best_y = Math.min(20, Math.max(5, y + 3));
+        const best_x = Math.min(20, Math.max(5, x + 3));
+        const best_y = Math.min(20, Math.max(5, y + 3));
 
         this.shrinkCells(best_x, best_y);
         this.expandCells(best_x, best_y);
@@ -65,23 +65,23 @@ export class GameDialog {
             }
     }
 
-    handleClick(evt: MouseEvent) {
-        let target = <HTMLDivElement>evt.target;
-        if (target.dataset.x == null || target.dataset.y == null) {
+    handleClick(evt: MouseEvent): void {
+        const target = <HTMLDivElement>evt.target;
+        if (target.dataset.x === undefined || target.dataset.y === undefined) {
             console.error("Something was wrong with target data!");
             return;
         }
-        let x = parseInt(target.dataset.x) + 1;
-        let y = parseInt(target.dataset.y) + 1;
+        const x = parseInt(target.dataset.x) + 1;
+        const y = parseInt(target.dataset.y) + 1;
         this.callback(x, y);
         this.handleClose();
     }
 
-    shrinkCells(new_x: number, new_y: number) {
+    shrinkCells(new_x: number, new_y: number): void {
         //delete column
         for (let i = this.x_size - 1; i >= new_x; i--) {
             for (let j = 0; j < this.y_size; j++) {
-                let cell = this.cells[i][j];
+                const cell = this.cells[i][j];
                 cell.onanimationend = (anim) => {
                     if (anim.animationName === "fade-out-corner-cell") {
                         cell.remove();
@@ -95,7 +95,7 @@ export class GameDialog {
         //delete row
         for (let j = this.y_size - 1; j >= new_y; j--) {
             for (let i = 0; i < this.x_size; i++) {
-                let cell = this.cells[i][j];
+                const cell = this.cells[i][j];
                 cell.onanimationend = (anim) => {
                     if (anim.animationName === "fade-out-corner-cell") {
                         cell.remove();
@@ -108,12 +108,12 @@ export class GameDialog {
         if (this.y_size > new_y) this.y_size = new_y;
     }
 
-    expandCells(new_x: number, new_y: number) {
+    expandCells(new_x: number, new_y: number): void {
         //make column
         for (let i = this.x_size; i < new_x; i++) {
             this.cells.push([]);
             for (let j = 0; j < this.y_size; j++) {
-                let cell = this.generateCell(i, j);
+                const cell = this.generateCell(i, j);
                 this.cells[i].push(cell);
                 this.grid.appendChild(cell);
             }
@@ -122,7 +122,7 @@ export class GameDialog {
         //make row
         for (let j = this.y_size; j < new_y; j++) {
             for (let i = 0; i < this.x_size; i++) {
-                let cell = this.generateCell(i, j);
+                const cell = this.generateCell(i, j);
                 this.cells[i].push(cell);
                 this.grid.appendChild(cell);
             }
@@ -130,8 +130,8 @@ export class GameDialog {
         if (this.y_size < new_y) this.y_size = new_y;
     }
 
-    generateCell(i: number, j: number) {
-        let cell = document.createElement("div");
+    generateCell(i: number, j: number): HTMLDivElement {
+        const cell = document.createElement("div");
         cell.classList.add("new-game-cell");
         cell.dataset.x = i.toString();
         cell.dataset.y = j.toString();
