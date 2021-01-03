@@ -4,7 +4,8 @@
     "description": "",
     "scripts": {
         "build": "npm run lint && tsc && echo \"Build finished.\"",
-        "lint": "eslint \"./**/*.ts\""
+        "lint": "eslint \"./**/*.ts\"",
+        "start": "python3 -m http.server 8000"
     },
     "repository": {
         "type": "git",
