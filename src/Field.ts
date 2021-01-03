@@ -19,16 +19,16 @@ export class Field {
     private activated = false;
 
     constructor(public id: number, public x: number, public y: number, private net: NetManager, private parent: Galaxy) {
-        let result = this.generateHTML();
+        const result = this.generateHTML();
         this.html = result[0];
         this.actualField = result[1];
         this.html.addEventListener("click", this.handleClick.bind(this));
     }
 
     private generateHTML(): [HTMLDivElement, HTMLDivElement] {
-        let divElement = document.createElement("div");
+        const divElement = document.createElement("div");
         divElement.classList.add("game-field-wrapper");
-        let actualField = document.createElement("div");
+        const actualField = document.createElement("div");
         actualField.classList.add("game-field");
         divElement.style.gridColumn = `${this.x + 1} / ${this.x + 2}`;
         divElement.style.gridRow = `${this.y + 1} / ${this.y + 2}`;
@@ -37,7 +37,7 @@ export class Field {
         return [divElement, actualField];
     }
 
-    handleClick() {
+    handleClick(): void {
         if (this.lastClicked >= Date.now() - DOUBLE_CLICK_TIME) {
             this.parent.fieldReset(this);
         } else {
@@ -46,7 +46,7 @@ export class Field {
         this.lastClicked = Date.now();
     }
 
-    activate() {
+    activate(): void {
         if (this.activated) return;
         this.activated = true;
         this.actualField.classList.add("active");
@@ -55,32 +55,32 @@ export class Field {
         this.html.appendChild(this.spinner);
     }
 
-    deactivate() {
+    deactivate(): void {
         this.activated = false;
         if (this.spinner) { this.spinner.remove(); this.spinner = null; }
         this.actualField.classList.remove("active");
     }
 
-    registerDot(dot: Dot) {
+    registerDot(dot: Dot): void {
         this.registeredDot = dot;
         this.actualField.style.backgroundColor = dot.getColor();
         this.setBorderColor(true);
     }
 
-    removeDot() {
+    removeDot(): void {
         this.registeredDot = null;
         this.actualField.style.backgroundColor = "#444";
         this.setBorderColor(true);
     }
 
-    setSurrounding(up: Field | null, right: Field | null, down: Field | null, left: Field | null) {
+    setSurrounding(up: Field | null, right: Field | null, down: Field | null, left: Field | null): void {
         this.up = up;
         this.right = right;
         this.down = down;
         this.left = left;
     }
 
-    setBorderColor(propagade: boolean) {
+    setBorderColor(propagade: boolean): void {
         this.actualField.style.borderTopColor = this.determinBorderColor(this.up);
         this.actualField.style.borderRightColor = this.determinBorderColor(this.right);
         this.actualField.style.borderBottomColor = this.determinBorderColor(this.down);
@@ -93,7 +93,7 @@ export class Field {
         }
     }
 
-    determinBorderColor(otherField: Field | null) {
+    determinBorderColor(otherField: Field | null): string {
         if (otherField === null) {
             if (this.registeredDot) return this.registeredDot.getColor(100);
             else return "#333";

@@ -16,7 +16,7 @@ export class Galaxy {
         this.registerEventHandler();
     }
 
-    buildGame(data: any) {
+    buildGame(data: any): void {
         // Reset
         for (const id in this.dots) {
             this.dots[id].html.remove();
@@ -34,16 +34,16 @@ export class Galaxy {
         for (let i = 0; i < this.fields_by_pos.length; i++) {
             this.fields_by_pos[i] = new Array(this.y_size);
         }
-        let elem = document.querySelector(".game-grid");
+        const elem = document.querySelector(".game-grid");
         for (const field of data.state.fields) {
-            let f = new Field(field.id, field.x, field.y, this.network, this)
+            const f = new Field(field.id, field.x, field.y, this.network, this)
             this.fields[f.id] = f;
             this.fields_by_pos[f.x][f.y] = f;
             elem?.appendChild(f.html)
         }
         this.interconnectFields(this.x_size, this.y_size);
         for (const dot of data.state.dots) {
-            let d = new Dot(dot.id, dot.x, dot.y, this.network, this);
+            const d = new Dot(dot.id, dot.x, dot.y, this.network, this);
             this.dots[d.id] = d;
             elem?.appendChild(d.html);
             if (dot.fields) for (const field_id of dot.fields) {
@@ -52,34 +52,32 @@ export class Galaxy {
         }
     }
 
-    fieldClicked(f: Field) {
+    fieldClicked(f: Field): void {
         for (const f_id in this.fields) {
-            if (this.fields.hasOwnProperty(f_id)) {
-                const field = this.fields[f_id];
-                field.deactivate();
-            }
+            const field = this.fields[f_id];
+            field.deactivate();
         }
         f.activate();
         this.activeField = f;
     }
 
-    fieldReset(f: Field) {
+    fieldReset(f: Field): void {
         f.deactivate();
         this.makeChange(f, null);
     }
 
-    dotClicked(d: Dot) {
+    dotClicked(d: Dot): void {
         if (!this.activeField) return;
         this.makeChange(this.activeField, d);
         this.activeField.deactivate();
         this.activeField = null;
     }
 
-    makeChange(f: Field, d: Dot | null) {
+    makeChange(f: Field, d: Dot | null): void {
         this.network.send({ command: "game_change", payload: { field: f.id, dot: d != null ? d.id : d } })
     }
 
-    applyChange(data: any) {
+    applyChange(data: any): void {
         if (data.dot !== null) {
             this.fields[data.field].registerDot(this.dots[data.dot]);
         } else {
@@ -87,8 +85,8 @@ export class Galaxy {
         }
     }
 
-    newGame() {
-        let g = new GameDialog((x: number, y: number) => {
+    newGame(): void {
+        const g = new GameDialog((x: number, y: number) => {
             this.network.send({ command: "new_game", payload: { height: y, width: x } })
         });
         document.querySelector(".menu-bar")?.appendChild(g.container);
@@ -97,17 +95,17 @@ export class Galaxy {
     private interconnectFields(x_size: number, y_size: number) {
         for (let x = 0; x < x_size; x++) {
             for (let y = 0; y < y_size; y++) {
-                let field = this.fields_by_pos[x][y];
-                let up = y === 0 ? null : this.fields_by_pos[x][y - 1];
-                let down = y === y_size - 1 ? null : this.fields_by_pos[x][y + 1];
-                let right = x === x_size - 1 ? null : this.fields_by_pos[x + 1][y];
-                let left = x === 0 ? null : this.fields_by_pos[x - 1][y];
+                const field = this.fields_by_pos[x][y];
+                const up = y === 0 ? null : this.fields_by_pos[x][y - 1];
+                const down = y === y_size - 1 ? null : this.fields_by_pos[x][y + 1];
+                const right = x === x_size - 1 ? null : this.fields_by_pos[x + 1][y];
+                const left = x === 0 ? null : this.fields_by_pos[x - 1][y];
                 field.setSurrounding(up, right, down, left);
             }
         }
     }
 
-    registerEventHandler() {
+    registerEventHandler(): void {
         document.querySelector("#new")?.addEventListener("click", this.newGame.bind(this));
         //document.querySelector("#close").addEventListener("click", this.TODO.bind(this));
     }

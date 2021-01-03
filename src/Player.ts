@@ -6,7 +6,7 @@ export class Player {
     }
 
     private buildHTML(): HTMLDivElement {
-        let html = document.createElement("div");
+        const html = document.createElement("div");
         html.innerText = this.name;
 
         return html;
