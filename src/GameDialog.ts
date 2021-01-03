@@ -25,14 +25,14 @@ export class GameDialog {
         const grid = document.createElement("div");
         grid.classList.add("new-game-grid");
 
-        container.appendChild(this.grid);
+        container.appendChild(grid);
 
         for (let i = 0; i < this.x_size; i++) {
             this.cells.push([]);
             for (let j = 0; j < this.y_size; j++) {
                 const cell = this.generateCell(i, j);
                 this.cells[i].push(cell);
-                this.grid.appendChild(cell);
+                grid.appendChild(cell);
             }
         }
 
