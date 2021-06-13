@@ -4,12 +4,18 @@
         "dockerfile": "Dockerfile",
         // Update 'VARIANT' to pick a Node version: 10, 12, 14
         "args": {
-            "VARIANT": "14"
+            "VARIANT": "14",
+            "VERSION": "0.202.2"
         }
     },
     // Set *default* container specific settings.json values on container create.
     "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
+        "terminal.integrated.profiles.linux": {
+            "bash": {
+                "path": "bash"
+            },
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
     },
     // Add the IDs of extensions you want installed when the container is created.
     "extensions": [
